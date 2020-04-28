@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/bf_server.dir/bf_server.cpp.o  -o bf_server 

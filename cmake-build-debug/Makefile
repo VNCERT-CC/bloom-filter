@@ -123,6 +123,86 @@ bloom_filter/fast:
 	$(MAKE) -f CMakeFiles/bloom_filter.dir/build.make CMakeFiles/bloom_filter.dir/build
 .PHONY : bloom_filter/fast
 
+#=============================================================================
+# Target rules for targets named bf_server
+
+# Build rule for target.
+bf_server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bf_server
+.PHONY : bf_server
+
+# fast build rule for target.
+bf_server/fast:
+	$(MAKE) -f CMakeFiles/bf_server.dir/build.make CMakeFiles/bf_server.dir/build
+.PHONY : bf_server/fast
+
+#=============================================================================
+# Target rules for targets named bf_client
+
+# Build rule for target.
+bf_client: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bf_client
+.PHONY : bf_client
+
+# fast build rule for target.
+bf_client/fast:
+	$(MAKE) -f CMakeFiles/bf_client.dir/build.make CMakeFiles/bf_client.dir/build
+.PHONY : bf_client/fast
+
+bf_client.o: bf_client.cpp.o
+
+.PHONY : bf_client.o
+
+# target to build an object file
+bf_client.cpp.o:
+	$(MAKE) -f CMakeFiles/bf_client.dir/build.make CMakeFiles/bf_client.dir/bf_client.cpp.o
+.PHONY : bf_client.cpp.o
+
+bf_client.i: bf_client.cpp.i
+
+.PHONY : bf_client.i
+
+# target to preprocess a source file
+bf_client.cpp.i:
+	$(MAKE) -f CMakeFiles/bf_client.dir/build.make CMakeFiles/bf_client.dir/bf_client.cpp.i
+.PHONY : bf_client.cpp.i
+
+bf_client.s: bf_client.cpp.s
+
+.PHONY : bf_client.s
+
+# target to generate assembly for a file
+bf_client.cpp.s:
+	$(MAKE) -f CMakeFiles/bf_client.dir/build.make CMakeFiles/bf_client.dir/bf_client.cpp.s
+.PHONY : bf_client.cpp.s
+
+bf_server.o: bf_server.cpp.o
+
+.PHONY : bf_server.o
+
+# target to build an object file
+bf_server.cpp.o:
+	$(MAKE) -f CMakeFiles/bf_server.dir/build.make CMakeFiles/bf_server.dir/bf_server.cpp.o
+.PHONY : bf_server.cpp.o
+
+bf_server.i: bf_server.cpp.i
+
+.PHONY : bf_server.i
+
+# target to preprocess a source file
+bf_server.cpp.i:
+	$(MAKE) -f CMakeFiles/bf_server.dir/build.make CMakeFiles/bf_server.dir/bf_server.cpp.i
+.PHONY : bf_server.cpp.i
+
+bf_server.s: bf_server.cpp.s
+
+.PHONY : bf_server.s
+
+# target to generate assembly for a file
+bf_server.cpp.s:
+	$(MAKE) -f CMakeFiles/bf_server.dir/build.make CMakeFiles/bf_server.dir/bf_server.cpp.s
+.PHONY : bf_server.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -157,8 +237,16 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... bloom_filter"
+	@echo "... bf_server"
+	@echo "... bf_client"
+	@echo "... edit_cache"
+	@echo "... bf_client.o"
+	@echo "... bf_client.i"
+	@echo "... bf_client.s"
+	@echo "... bf_server.o"
+	@echo "... bf_server.i"
+	@echo "... bf_server.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

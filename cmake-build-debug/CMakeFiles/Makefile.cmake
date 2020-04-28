@@ -49,4 +49,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/bloom_filter.dir/DependInfo.cmake"
+  "CMakeFiles/bf_server.dir/DependInfo.cmake"
+  "CMakeFiles/bf_client.dir/DependInfo.cmake"
   )

@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/bf_client.dir/bf_client.cpp.o  -o bf_client 

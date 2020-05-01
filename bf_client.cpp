@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
     int readStatus;     // status when read response from a Socket Server
     struct sockaddr_in sockServerAddr{};  // The structure of a Socket Server address
     if (argc < 2) {
-        std::cerr << "Lack of command!" << std::endl;
+        std::cerr << "\"$ ./bf_client help\" for usage." << std::endl;
         return 1;
     }
     // Handle command line arguments
@@ -67,7 +67,7 @@ int main(int argc, char const *argv[]) {
     }
 
     // Print the response out to console
-    printf("From server: \n%s\n", receiveBuffer );
+    printf("%s\n", receiveBuffer);
 
     // Close socket and return
     close(socketClient);

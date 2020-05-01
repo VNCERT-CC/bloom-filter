@@ -20,6 +20,7 @@
 
 std::bitset<BF_SIZE> bloomFilter;
 bool startState = true;
+int numElement = 0;
 
 /** Split the input string with delim (default is space ' '). This is void function (pure procedure).
  * @tparam Container: the C++ STL container (std::vector, std::list, std::set, ...).
@@ -58,18 +59,16 @@ std::vector<int> hashFunc(std::string inputValue) {
  */
 std::string showUsage() {
     std::stringstream stringstream;
-    stringstream << std::endl;
-    stringstream << "|*****************************************************|" << std::endl;
-    stringstream << "|**************** Bloom Filter Usage *****************|" << std::endl;
-    stringstream << "|*****************************************************|" << std::endl;
-    stringstream << "| Show Bloom filter info: $ ./bf_client show_info     |" << std::endl;
-    stringstream << "| Load new input file: $ ./bf_client load_file <path> |" << std::endl;
-    stringstream << "| Add new value: $ ./bf_client add_value <value>      |" << std::endl;
-    stringstream << "| Load check file: $ ./bf_client load_check <path>    |" << std::endl;
-    stringstream << "| Check new value: $ ./bf_client check_value <value>  |" << std::endl;
-    stringstream << "| Reset Bloom filter: $ ./bf_client reset             |" << std::endl;
-    stringstream << "|*****************************************************|" << std::endl;
-    stringstream << std::endl;
+    stringstream << "|***************************************************|" << std::endl;
+    stringstream << "|*************** Bloom Filter Usage ****************|" << std::endl;
+    stringstream << "|***************************************************|" << std::endl;
+    stringstream << "| Show Bloom filter info: $ ./bf_client info        |" << std::endl;
+    stringstream << "| Load new input file: $ ./bf_client load <path>    |" << std::endl;
+    stringstream << "| Add new value: $ ./bf_client add <value>          |" << std::endl;
+    stringstream << "| Load check file: $ ./bf_client check_file <path>  |" << std::endl;
+    stringstream << "| Check new value: $ ./bf_client check <value>      |" << std::endl;
+    stringstream << "| Reset Bloom filter: $ ./bf_client reset           |" << std::endl;
+    stringstream << "|***************************************************|";
     startState = false;
     return stringstream.str();
 }
@@ -80,13 +79,12 @@ std::string showUsage() {
  */
 std::string showBFInfo() {
     std::stringstream stringstream;
-    stringstream << std::endl;
     stringstream << "Bloom filter information:" << std::endl;
     stringstream << "Number of hash functions: " << NUM_HASH_FUNCS << std::endl;
     stringstream << "Size of the Bloom filter: " << BF_SIZE << std::endl;
     stringstream << "Maximum storage capacity value: " << (int) (BF_SIZE / (NUM_HASH_FUNCS /  log(2))) << std::endl;
     stringstream << "False positive probability: " << (int)(pow(2, -NUM_HASH_FUNCS) * 100) << "%" << std::endl;
-    stringstream << std::endl;
+    stringstream << "Current number of values: " << numElement;
     startState = false;
     return stringstream.str();
 }
@@ -103,17 +101,17 @@ std::string loadInputFile(const std::string& inputFilePath) {
     std::string hashValueString;
     inputFile.open(inputFilePath);
     if (inputFile.fail()) {
-        stringstream << "The input file is not exist!" << std::endl;
+        stringstream << "The input file is not exist!";
         return stringstream.str();
     }
     while (!inputFile.eof()) {
         std::getline(inputFile, hashValueString);
-        if (hashValueString.empty()) break;
-        hashValueString.pop_back();
+        if (hashValueString.empty()) continue;
+        if (hashValueString.back() == '\r') hashValueString.pop_back();
         inputHashValueVector.push_back(hashValueString);
     }
     if (inputHashValueVector.empty()) {
-        stringstream << "The input file is empty!" << std::endl;
+        stringstream << "The input file is empty!";
         return stringstream.str();
     }
     inputFile.close();
@@ -123,8 +121,9 @@ std::string loadInputFile(const std::string& inputFilePath) {
         for (int i = 0; i < NUM_HASH_FUNCS; ++i) {
             bloomFilter[hashIndex[i]] = true;
         }
+        ++numElement;
     }
-    stringstream << "Complete load the new input file \"" << inputFilePath << "\" into the Bloom filter" << std::endl;
+    stringstream << "Complete load the new input file \"" << inputFilePath << "\" into the Bloom filter";
     startState = false;
     return stringstream.str();
 }
@@ -138,8 +137,9 @@ std::string addValue(const std::string& inputValue) {
     std::stringstream stringstream;
     std::vector<int> hashIndex = hashFunc(inputValue);
     for (int i = 0; i < NUM_HASH_FUNCS; ++i) bloomFilter[hashIndex[i]] = true;
-    stringstream << "Complete add \"" << inputValue << "\" to the Bloom filter" << std::endl;
+    stringstream << "Complete add \"" << inputValue << "\" to the Bloom filter";
     startState = false;
+    ++numElement;
     return stringstream.str();
 }
 
@@ -157,11 +157,12 @@ std::string loadCheckFile(const std::string& checkFilePath) {
     checkFile.open(checkFilePath, std::ios::in);
     while (!checkFile.eof()) {
         std::getline(checkFile, hashValueString);
-        if (hashValueString.empty()) break;
+        if (hashValueString.empty()) continue;
+        if (hashValueString.back() == '\r') hashValueString.pop_back();
         checkHashValueVector.push_back(hashValueString);
     }
     if (checkHashValueVector.empty()) {
-        stringstream << "The check file is empty!" << std::endl;
+        stringstream << "The check file is empty!";
         return stringstream.str();
     }
     checkFile.close();
@@ -178,7 +179,7 @@ std::string loadCheckFile(const std::string& checkFilePath) {
         }
         if (isExist) stringstream << "Exist " << hashValue << std::endl;
     }
-    stringstream << "Complete check values in \"" << checkFilePath << "\" with the Bloom filter" << std::endl;
+    stringstream << "Complete check values in \"" << checkFilePath << "\" with the Bloom filter";
     startState = false;
     return stringstream.str();
 }
@@ -199,8 +200,8 @@ std::string checkValue(const std::string& checkValue) {
         }
     }
     startState = false;
-    if (isExist) stringstream << "Exist " << checkValue << std::endl;
-    else stringstream << "Not exist" << std::endl;
+    if (isExist) stringstream << "exist";
+    else stringstream << "not exist";
     return stringstream.str();
 }
 
@@ -212,7 +213,8 @@ std::string restartBF() {
     std::stringstream stringstream;
     startState = true;
     bloomFilter.reset();
-    stringstream << "The Bloom filter has been reset!" << std::endl;
+    stringstream << "The Bloom filter has been reset!";
+    numElement = 0;
     return stringstream.str();
 }
 
@@ -280,13 +282,13 @@ int main(int argc, char const *argv[]) {
         std::string passingCommand (receiveBuffer);
         splitString(passingCommand, requestCommandVector);
 
-        if (requestCommandVector[0] == "show_info") {
+        if (requestCommandVector[0] == "info") {
             std::string passingString = showBFInfo();
             send(incomingClient, passingString.c_str(), strlen(passingString.c_str()), 0);
             continue;
         }
 
-        if (requestCommandVector[0] == "load_file") {
+        if (requestCommandVector[0] == "load") {
             if (requestCommandVector.size() > 1) {
                 std::string response = loadInputFile(requestCommandVector[1]);
                 send(incomingClient, response.c_str(), strlen(response.c_str()), 0);
@@ -296,7 +298,7 @@ int main(int argc, char const *argv[]) {
             continue;
         }
 
-        if (requestCommandVector[0] == "add_value") {
+        if (requestCommandVector[0] == "add") {
             if (requestCommandVector.size() > 1) {
                 std::string response = addValue(requestCommandVector[1]);
                 send(incomingClient, response.c_str(), strlen(response.c_str()), 0);
@@ -306,7 +308,7 @@ int main(int argc, char const *argv[]) {
             continue;
         }
 
-        if (requestCommandVector[0] == "load_check") {
+        if (requestCommandVector[0] == "check_file") {
             if (requestCommandVector.size() > 1) {
                 std::string response = loadCheckFile(requestCommandVector[1]);
                 send(incomingClient, response.c_str(), strlen(response.c_str()), 0);
@@ -316,7 +318,7 @@ int main(int argc, char const *argv[]) {
             continue;
         }
 
-        if (requestCommandVector[0] == "check_value") {
+        if (requestCommandVector[0] == "check") {
             if (requestCommandVector.size() > 1) {
                 std::string response = checkValue(requestCommandVector[1]);
                 send(incomingClient, response.c_str(), strlen(response.c_str()), 0);
@@ -335,5 +337,6 @@ int main(int argc, char const *argv[]) {
         // Default, show guide panel
         send(incomingClient, showUsage().c_str(), strlen(showUsage().c_str()), 0);
     }
+    close(socketServer);
     return 0;
 }

@@ -12,8 +12,8 @@ Toolkit has 2 component:
 * Client side: The program with Socket Client role. Send request command to Socket Server to impact with the Bloom filter at Server side.
 
 Runtime:
-* Server side is running forever.
-* Client side is running only one time per request.
+* Server side will run forever.
+* Client side will run only one time per request.
 
 User can impact to Bloom filter (at Server side) with commands of Client side.
 

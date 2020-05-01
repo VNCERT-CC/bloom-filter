@@ -68,8 +68,10 @@ void loadInputFile() {
     }
     while (!inputFile.eof()) {
         std::getline(inputFile, hashValueString);
-        if (hashValueString.empty()) break;
-        hashValueString.pop_back();
+        if (hashValueString.empty()) continue;
+        if (hashValueString.back() == '\r') hashValueString.pop_back();
+        std::cout << "Value: " << hashValueString << std::endl;
+//        hashValueString.pop_back();
         inputHashValueVector.push_back(hashValueString);
     }
     if (inputHashValueVector.empty()) {
@@ -77,6 +79,7 @@ void loadInputFile() {
         return;
     }
     inputFile.close();
+    std::cout << "Here" << std::endl;
 
     for (const std::string& hashValue : inputHashValueVector) {
         std::vector<int> hashIndex = hashFunc(hashValue);
@@ -160,49 +163,52 @@ void restartBF() {
 
 
 int main() {
-    int option;
-    while (true) {
-        showUsage();
-        if (startState) {
-            std::cout << "Select some option in panel: ";
-        } else {
-            std::cout << "Select new option in panel: ";
-        }
-        std::cin >> option;
-        std::cin.clear();
-        std::cin.ignore(10000,'\n');
-        if (std::cin.fail()) {
-            std::cout << "Invalid the option value!" << std::endl;
-            continue;
-        }
-        if (option == 0) {
-            showBFInfo();
-            continue;
-        }
-        if (option == 1) {
-            loadInputFile();
-            continue;
-        }
-        if (option == 2) {
-            addValue();
-            continue;
-        }
-        if (option == 3) {
-            loadCheckFile();
-            continue;
-        }
-        if (option == 4) {
-            checkValue();
-            continue;
-        }
-        if (option == 5) {
-            restartBF();
-            continue;
-        }
-        if (option == 6) {
-            break;
-        }
-        std::cout << "Invalid command value!" << std::endl;
-    }
+
+    loadInputFile();
+
+//    int option;
+//    while (true) {
+//        showUsage();
+//        if (startState) {
+//            std::cout << "Select some option in panel: ";
+//        } else {
+//            std::cout << "Select new option in panel: ";
+//        }
+//        std::cin >> option;
+//        std::cin.clear();
+//        std::cin.ignore(10000,'\n');
+//        if (std::cin.fail()) {
+//            std::cout << "Invalid the option value!" << std::endl;
+//            continue;
+//        }
+//        if (option == 0) {
+//            showBFInfo();
+//            continue;
+//        }
+//        if (option == 1) {
+//            loadInputFile();
+//            continue;
+//        }
+//        if (option == 2) {
+//            addValue();
+//            continue;
+//        }
+//        if (option == 3) {
+//            loadCheckFile();
+//            continue;
+//        }
+//        if (option == 4) {
+//            checkValue();
+//            continue;
+//        }
+//        if (option == 5) {
+//            restartBF();
+//            continue;
+//        }
+//        if (option == 6) {
+//            break;
+//        }
+//        std::cout << "Invalid command value!" << std::endl;
+//    }
     return 0;
 }

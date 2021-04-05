@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/bloom_filter.dir/main.cpp.o"
-  "bloom_filter"
   "bloom_filter.pdb"
+  "bloom_filter"
 )
 
 # Per-language clean rules from dependency scanning.

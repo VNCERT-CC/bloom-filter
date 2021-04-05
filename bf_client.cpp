@@ -11,7 +11,7 @@
 #include <string>
 #include <iostream>
 
-#define PORT 6595
+#define PORT 6666
 
 /** The main program run as a Socket Client (C)
  *

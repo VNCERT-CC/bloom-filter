@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include <netinet/in.h>
 #include <string.h>
-#define PORT 6595
-#define NUM_HASH_FUNCS 4
-#define BF_SIZE 57707801
+#define PORT 6666
+#define NUM_HASH_FUNCS 10
+#define BF_SIZE 1442695040            // 57707801
 
 std::bitset<BF_SIZE> bloomFilter;
 bool startState = true;
@@ -83,7 +83,7 @@ std::string showBFInfo() {
     stringstream << "Number of hash functions: " << NUM_HASH_FUNCS << std::endl;
     stringstream << "Size of the Bloom filter: " << BF_SIZE << std::endl;
     stringstream << "Maximum storage capacity value: " << (int) (BF_SIZE / (NUM_HASH_FUNCS /  log(2))) << std::endl;
-    stringstream << "False positive probability: " << (int)(pow(2, -NUM_HASH_FUNCS) * 100) << "%" << std::endl;
+    stringstream << "False positive probability: " << (float )(pow(2, -NUM_HASH_FUNCS) * 100) << "%" << std::endl;
     stringstream << "Current number of values: " << numElement;
     startState = false;
     return stringstream.str();
